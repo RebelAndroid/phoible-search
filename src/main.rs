@@ -1,5 +1,10 @@
 use std::collections::{HashMap, HashSet};
 
+
+
+mod parser;
+use parser::Parser;
+
 #[derive(Debug)]
 struct Language {
     name: String,
@@ -54,7 +59,4 @@ fn main() {
             }
         }
     }
-
-    println!("languages: {:#?}", languages.get(&1));
-
 }
