@@ -1,10 +1,7 @@
-use std::collections::{HashMap, HashSet};
-
-
-
+use std::collections::{HashMap};
 mod parser;
 mod interpreter;
-use parser::{Parser, Expression};
+use parser::{Parser};
 
 use crate::interpreter::has_phonemes;
 
@@ -14,7 +11,16 @@ pub struct Language {
     phonemes: Vec<(String, Vec<String>)>,
 }
 
+#[derive(clap_derive::Parser, Debug)]
+struct Args{
+    input_expression: String,
+}
+
 fn main() {
+    let args = {
+        use clap::Parser;
+        Args::parse()
+    };
     let mut reader =
         csv::Reader::from_path("phoible_data.csv").expect("unable to read phoible data!");
     let header = reader.headers().unwrap();
@@ -41,7 +47,7 @@ fn main() {
             .get(allophone_column)
             .unwrap();
             let allophones = if allophones_string != "NA"{
-                allophones_string.split(" ")
+                allophones_string.split(' ')
                 .map(|s| s.to_string())
                 .collect::<Vec<String>>()
             }else{
@@ -62,7 +68,7 @@ fn main() {
             }
         }
     }
-    let mut p = Parser::new("θ&ð");
+    let mut p = Parser::new(&args.input_expression);
     let ex = *p.expression();
     let mut count = 0;
     println!("{:#?}", ex);
@@ -72,6 +78,6 @@ fn main() {
             count += 1;
         }
     }
-    println!("{} languages out of {}", count, languages.len());
+    println!("{} languages out of {} satisfy {}", count, languages.len(), args.input_expression);
 
 }

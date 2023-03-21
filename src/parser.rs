@@ -20,14 +20,13 @@ enum Token {
 
 #[derive(Debug, PartialEq)]
 pub enum BinaryOperator {
-    AND,
-    OR,
+    And,
+    Or,
 }
 
 #[derive(Debug)]
 pub enum Expression {
     Literal(String),
-    Grouping(Box<Expression>),
     Not(Box<Expression>),
     Binary(Box<Expression>, BinaryOperator, Box<Expression>),
 }
@@ -71,8 +70,8 @@ impl Parser {
         let mut ex = self.unary();
         while self.current < self.tokens.len() && matches!(self, And, Or){
             let operator = match self.tokens[self.current - 1]{
-                Token::And => BinaryOperator::AND,
-                Token::Or => BinaryOperator::OR,
+                Token::And => BinaryOperator::And,
+                Token::Or => BinaryOperator::Or,
                 _ => unreachable!(),
             };
             let ex2 = self.unary();
