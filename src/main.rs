@@ -3,10 +3,13 @@ use std::collections::{HashMap, HashSet};
 
 
 mod parser;
-use parser::Parser;
+mod interpreter;
+use parser::{Parser, Expression};
+
+use crate::interpreter::has_phonemes;
 
 #[derive(Debug)]
-struct Language {
+pub struct Language {
     name: String,
     phonemes: Vec<(String, Vec<String>)>,
 }
@@ -59,7 +62,16 @@ fn main() {
             }
         }
     }
-    let mut p = Parser::new("!t&d");
-    println!("{:?}", p.expression());
+    let mut p = Parser::new("θ&ð");
+    let ex = *p.expression();
+    let mut count = 0;
+    println!("{:#?}", ex);
+    for (i, language) in &languages{
+        if has_phonemes(language, &ex){
+            println!("[{}]{}", i, language.name);
+            count += 1;
+        }
+    }
+    println!("{} languages out of {}", count, languages.len());
 
 }

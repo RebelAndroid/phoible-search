@@ -12,7 +12,7 @@ enum Token {
     LParen,
     #[token(")")]
     RParen,
-    #[regex("[a-z]", |l| l.slice().to_string())]
+    #[regex("[^()&|!]+", |l| l.slice().to_string())]
     Phoneme(String),
     #[error]
     Error,
