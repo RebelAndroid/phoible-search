@@ -59,4 +59,7 @@ fn main() {
             }
         }
     }
+    let mut p = Parser::new("!t&d");
+    println!("{:?}", p.expression());
+
 }
