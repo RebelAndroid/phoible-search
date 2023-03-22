@@ -1,3 +1,5 @@
+use std::process::exit;
+
 use logos::Logos;
 
 #[derive(Logos, Debug, PartialEq)]
@@ -90,6 +92,10 @@ impl Parser {
 
     fn terminal(&mut self) -> Box<Expression>{
         if matches!(self, LParen){
+            if matches!(self, RParen) {
+                eprintln!("Empty parenthesis are not allowed!");
+                exit(1);
+            }
             let x = self.expression();
             assert!(matches!(self, RParen));
             x

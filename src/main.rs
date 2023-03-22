@@ -1,4 +1,4 @@
-use std::collections::{HashMap};
+use std::{collections::{HashMap}, process::exit};
 mod parser;
 mod interpreter;
 use parser::{Parser};
@@ -21,6 +21,10 @@ fn main() {
         use clap::Parser;
         Args::parse()
     };
+    if args.input_expression.len() == 0{
+        eprintln!("Enter an expression!");
+        exit(1);
+    }
     let mut reader =
         csv::Reader::from_path("phoible_data.csv").expect("unable to read phoible data!");
     let header = reader.headers().unwrap();
